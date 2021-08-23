@@ -24,7 +24,7 @@ const Book = new mongoose.Schema({
 //Model
 const bookModel = mongoose.model("book", Book);
 
-// let arr = [];
+
 
 function seedDataCollection() {
   const book1 = new bookModel({
@@ -35,7 +35,7 @@ function seedDataCollection() {
     email: "emamsh990@gmail.com",
   });
 
-  arr.push(book1);
+  
 
   const book2 = new bookModel({
     title: "Blue Ocean Strategy",
@@ -44,7 +44,7 @@ function seedDataCollection() {
     email: "emamsh990@gmail.com",
   });
 
-  arr.push(book2);
+  
 
   const book3 = new bookModel({
     title: "A Short History of Nearly Everything",
@@ -53,7 +53,7 @@ function seedDataCollection() {
     email: "emamsh990@gmail.com",
   });
 
-  arr.push(book3);
+ 
 
   book1.save();
   book2.save();
@@ -62,7 +62,7 @@ function seedDataCollection() {
 
 seedDataCollection();
 
-console.log(arr);
+
 
 server.get("/books", getData);
 
