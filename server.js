@@ -24,7 +24,7 @@ const Book = new mongoose.Schema({
 //Model
 const bookModel = mongoose.model("book", Book);
 
-let arr = [];
+// let arr = [];
 
 function seedDataCollection() {
   const book1 = new bookModel({
@@ -67,11 +67,10 @@ console.log(arr);
 server.get("/books", getData);
 
 function getData(req, res) {
-  let arr2 = arr.map((x) => {
-    return x;
+  bookModel.find(function (err, books) {
+    if (err) return console.error(err);
+    res.send(books);
   });
-
-  res.send(arr2);
 }
 
 server.listen(PORT, () => {
