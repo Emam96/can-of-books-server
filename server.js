@@ -73,6 +73,24 @@ function getData(req, res) {
   });
 }
 
+server.get("/", home);
+
+
+
+
+function home(req, res) {
+  
+    res.send("home");
+  
+}
+
+
+
+
+
+
+
+
 server.listen(PORT, () => {
   console.log(`listening on PORT ${PORT}`);
 });
