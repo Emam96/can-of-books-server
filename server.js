@@ -92,23 +92,35 @@ function getData(req, res) {
 
 server.post("/addbook",  addBook);
 
-  function  addBook  (req, res)  {
+ async  function  addBook  (req, res)  {
   let { email, title, description } = req.body;
 
-  bookModel.find({ email: email }, function (error, books) {
-    if (error) {
-      res.send("NO DATA :(");
-    } else {
-      books.push({
-        title,
-        description,
-      });
+  // bookModel.find({ email: email }, function (error, books) {
+  //   if (error) {
+  //     res.send("NO DATA :(");
+  //   } else {
+  //     books.push({
+  //       title,
+  //       description,
+  //     });
      
-      books.save();
-      res.send(books);
+  //     books.save();
+  //     res.send(books);
+  //   }
+  // });
+
+  await bookModel.create({title,description}); 
+
+  bookModel.find({ email: email }, function (err, books) {
+    if (err) {
+        // console.log('error in getting the data')
+    } else {
+        // console.log(books);
+        res.send(books);
     }
-  });
-}
+})
+
+};
 
 server.delete("/deletebook/:i", deleteBook);
 
@@ -118,22 +130,43 @@ server.delete("/deletebook/:i", deleteBook);
   let index = Number(req.params.i);
 
   let email = req.query.email;
-  bookModel.find({ email: email }, (error, books) => {
-    if (error) {
-      res.send("NO DATA :(");
+
+
+  bookModel.remove({_id:index},(error,books)=>{
+    if(error) {
+        console.log('error in deleteing the data')
     } else {
-      let books2 = books.filter((book, i2) => {
-        if (i2 !== index) {
-          return book;
-        }
-      });
-      // console.log(books2);
-      books = books2;
-      console.log(books[0]);
-          books.save();
-      res.send(books);
+        // console.log('data deleted', catData)
+        bookModel.find({ email: email }, function (err, books) {
+            if (err) {
+                console.log('error in getting the data')
+            } else {
+                // console.log(ownerData);
+                res.send(books);
+            }
+        })
     }
-  });
+})
+
+
+
+
+  // bookModel.find({ email: email }, (error, books) => {
+  //   if (error) {
+  //     res.send("NO DATA :(");
+  //   } else {
+  //     let books2 = books.filter((book, i2) => {
+  //       if (i2 !== index) {
+  //         return book;
+  //       }
+  //     });
+  //     // console.log(books2);
+  //     books = books2;
+  //     console.log(books[0]);
+  //         books.save();
+  //     res.send(books);
+  //   }
+  // });
 }
 
 server.get("/", home);
