@@ -14,10 +14,10 @@ const bookModel = require("./modules/model.js");
 const getData = require("./modules/getData.js");
 const addBook = require("./modules/addBook.js");
 const deleteBook = require("./modules/deleteBook.js");
+const logger = require("./logger");
 
 
-
-
+server.use(logger);
 
 
 function seedDataCollection() {
