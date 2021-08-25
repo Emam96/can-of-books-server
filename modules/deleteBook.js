@@ -24,26 +24,4 @@ function deleteBook(req, res) {
   });
 }
 
-// function deleteCatHandler(req,res) {
-//   // console.log(req.query.catID)
-//   console.log('inside the deleteCatHandler')
-//   console.log(req.params)
-//   console.log(req.params.catId2);
-//   let ownerName= req.query.ownerName;
 
-//   let catDataID = req.params.catId2;
-//   kittenModel.remove({_id:catDataID},(error,catData)=>{
-//       if(error) {
-//           console.log('error in deleteing the data')
-//       } else {
-//           console.log('data deleted', catData)
-//           kittenModel.find({ ownerName }, function (err, ownerData) {
-//               if (err) {
-//                   console.log('error in getting the data')
-//               } else {
-//                   console.log(ownerData);
-//                   res.send(ownerData)
-//               }
-//           })
-//       }
-//   })

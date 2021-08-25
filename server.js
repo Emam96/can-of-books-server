@@ -14,6 +14,7 @@ const bookModel = require("./modules/model.js");
 const getData = require("./modules/getData.js");
 const addBook = require("./modules/addBook.js");
 const deleteBook = require("./modules/deleteBook.js");
+const updateBook = require("./modules/updateBook.js");
 const logger = require("./logger");
 
 
@@ -72,6 +73,7 @@ server.get("/", home); // HOME
 server.get("/books", getData); // getting the books data from the DB
 server.post("/addbook", addBook); // Adding new books
 server.delete("/deletebook/:id", deleteBook); // deleting books
+server.put('/updateBook/:id',updateBook);  // updating books
 
 function home(req, res) {
   res.send("home");
