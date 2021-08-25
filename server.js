@@ -4,27 +4,21 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const axios = require("axios");
-const mongoose = require("mongoose");
-
+// const mongoose = require("mongoose");
 const PORT = process.env.PORT;
 const server = express();
 server.use(cors());
 server.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/books", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const bookModel = require("./modules/model.js");
+const getData = require("./modules/getData.js");
+const addBook = require("./modules/addBook.js");
+const deleteBook = require("./modules/deleteBook.js");
 
-//Schema
-const Book = new mongoose.Schema({
-  title: String,
-  description: String,
-  email: String,
-});
 
-//Model
-const bookModel = mongoose.model("book", Book);
+
+
+
 
 function seedDataCollection() {
   const book1 = new bookModel({
@@ -50,16 +44,16 @@ function seedDataCollection() {
   });
 
   const book4 = new bookModel({
-    title: "A Short History of Nearly Everything",
+    title: "The Man Who Mistook His Wife for a Hat",
     description:
-      "In Bryson's biggest book, he confronts his greatest challenge: to understand—and, if possible, answer—the oldest, biggest questions we have posed about the universe and ourselves.",
+      "The Man Who Mistook His Wife for a Hat and Other Clinical Tales is a 1985 book by neurologist Oliver Sacks describing the case histories of some of his patients.",
     email: "emamshararah12@gmail.com",
   });
 
   const book5 = new bookModel({
-    title: "A Short History of Nearly Earth",
+    title: "Origins: Fourteen Billion Years of Cosmic Evolution",
     description:
-      "In Bryson's biggest book, he confronts his greatest challenge: to understand—and, if possible, answer—the oldest, biggest questions we have posed about the universe and ourselves.",
+      "Origin's explores cosmic science's stunning new insights into the formation and evolution of our universe— of the cosmos, of galaxies and galaxy clusters, of stars within galaxies, of orbiting planets, and of different forms of life.",
     email: "emamshararah12@gmail.com",
   });
 
@@ -70,106 +64,14 @@ function seedDataCollection() {
   book5.save();
 }
 
- seedDataCollection();
-
-server.get("/books", getData);
-
-function getData(req, res) {
-  let email = req.query.email;
-
-  bookModel.find({ email: email }, function (error, books) {
-    if (error) {
-      res.send("NO DATA :(");
-    } else {
-      // console.log(books);
-      res.send(books);
-    }
-  });
-}
+// seedDataCollection();
 
 
 
-
-server.post("/addbook",  addBook);
-
- async  function  addBook  (req, res)  {
-  let { email, title, description } = req.body;
-
-  // bookModel.find({ email: email }, function (error, books) {
-  //   if (error) {
-  //     res.send("NO DATA :(");
-  //   } else {
-  //     books.push({
-  //       title,
-  //       description,
-  //     });
-     
-  //     books.save();
-  //     res.send(books);
-  //   }
-  // });
-
-  await bookModel.create({title,description}); 
-
-  bookModel.find({ email: email }, function (err, books) {
-    if (err) {
-        // console.log('error in getting the data')
-    } else {
-        // console.log(books);
-        res.send(books);
-    }
-})
-
-};
-
-server.delete("/deletebook/:i", deleteBook);
-
-// sendBookData = async (event) =>
-
- function deleteBook  (req, res)  {
-  let index = Number(req.params.i);
-
-  let email = req.query.email;
-
-
-  bookModel.remove({_id:index},(error,books)=>{
-    if(error) {
-        console.log('error in deleteing the data')
-    } else {
-        // console.log('data deleted', catData)
-        bookModel.find({ email: email }, function (err, books) {
-            if (err) {
-                console.log('error in getting the data')
-            } else {
-                // console.log(ownerData);
-                res.send(books);
-            }
-        })
-    }
-})
-
-
-
-
-  // bookModel.find({ email: email }, (error, books) => {
-  //   if (error) {
-  //     res.send("NO DATA :(");
-  //   } else {
-  //     let books2 = books.filter((book, i2) => {
-  //       if (i2 !== index) {
-  //         return book;
-  //       }
-  //     });
-  //     // console.log(books2);
-  //     books = books2;
-  //     console.log(books[0]);
-  //         books.save();
-  //     res.send(books);
-  //   }
-  // });
-}
-
-server.get("/", home);
+server.get("/", home); // HOME
+server.get("/books", getData); // getting the books data from the DB
+server.post("/addbook", addBook); // Adding new books
+server.delete("/deletebook/:id", deleteBook); // deleting books
 
 function home(req, res) {
   res.send("home");
